@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARM RTOS Premium Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Stats Row -->
+        <header class="stats-row">
+            <div class="card stat-card">
+                <h3>SYSTEM TICK</h3>
+                <div class="value" id="system-tick">0</div>
+                <div class="unit">ms elapsed</div>
+            </div>
+            <div class="card stat-card">
+                <h3>TASKS RUNNING</h3>
+                <div class="value" id="tasks-running">11</div>
+                <div class="unit">+ 1 idle + 1 timer</div>
+            </div>
+            <div class="card stat-card highlight">
+                <h3>SCHEDULER</h3>
+                <div class="value status-ok" id="scheduler-status">RUNNING</div>
+                <div class="unit">FreeRTOS v11 • <span style="color: var(--accent-gold); font-weight: bold;">[PRECISION RTOS]</span></div>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Left Column: Task States -->
+            <section class="card task-section">
+                <div class="card-header">
+                    <h2>TASK STATE — LIVE</h2>
+                </div>
+                <div id="task-list" class="task-list">
+                    <!-- Task items will be injected here -->
+                </div>
+            </section>
+
+            <!-- Right Column: Timeline & Analysis -->
+            <section class="right-col">
+                <div class="card timeline-card">
+                    <div class="card-header">
+                        <h2>SCHEDULER TIMELINE (LAST 2S)</h2>
+                    </div>
+                    <div class="timeline-grid" id="timeline">
+                        <!-- Activity dots will be injected here -->
+                    </div>
+                    <div class="timeline-footer">
+                        <span>tick <span id="tick-start">0</span>–<span id="tick-end">0</span></span>
+                        <button class="btn-secondary">how scheduler works ↗</button>
+                    </div>
+                </div>
+
+                <div class="card architecture-card">
+                    <div class="card-header">
+                        <h2>RTOS ARCHITECTURE & PROOF</h2>
+                    </div>
+                    <div class="arch-content">
+                        <div class="arch-item">
+                            <span class="label">HARWARE HEARTBEAT</span>
+                            <span class="value">SysTick Interept (CM3)</span>
+                            <span class="desc">Deterministic 1ms pulse via 24,999 reload cycles.</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="label">CONTEXT SWITCHING</span>
+                            <span class="value">PendSV Handler</span>
+                            <span class="desc">Managed by ARM NVIC for ZERO latency preemption.</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="label">DUAL STACK MODEL</span>
+                            <span class="value">MSP + PSP Enabled</span>
+                            <span class="desc">Proof of Hardware isolation between Kernel and Tasks.</span>
+                        </div>
+                        <div class="arch-item">
+                            <span class="label">SCHEDULING</span>
+                            <span class="value">Fixed-Priority Preemptive</span>
+                            <span class="desc">High priority tasks pre-empt lower ones IMMEDIATELY.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-row">
+                    <div class="card usage-card">
+                        <h3>QUEUES & IPC</h3>
+                        <div class="ipc-content">
+                            <div class="ipc-row">Queue_A <span class="dots" id="qA-dots"><i></i><i></i><i></i><i></i><i></i></span> Sensor→Process</div>
+                            <div class="ipc-row">Queue_B <span class="dots" id="qB-dots"><i></i><i></i><i></i><i></i><i></i></span> Process→Display</div>
+                            <div class="ipc-row">Semaphore <span class="status-ok" id="sem-status">FREE</span></div>
+                            <div class="ipc-row">Mutex <span class="status-err" id="mutex-status">LOCKED</span></div>
+                            <div class="ipc-row" style="margin-top: 10px; font-weight: bold; color: var(--accent-gold);">Shared_Counter = <span id="shared-ctr-val">0</span></div>
+                        </div>
+                    </div>
+                    <div class="card stack-card">
+                        <h3>STACK USAGE (FREE WORDS)</h3>
+                        <div id="stack-list" class="stack-list">
+                            <!-- Stack usage items -->
+                        </div>
+                        <div class="legend">
+                            <span class="ok">ok</span>
+                            <span class="warn">< 30% free</span>
+                            <span class="err">overflow risk</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Log Terminal -->
+        <footer class="card log-terminal">
+            <div class="card-header">
+                <h2>UART LOG OUTPUT</h2>
+                <div class="tabs" id="log-filters">
+                    <button class="active" data-filter="All">All</button>
+                    <button data-filter="MAYANK">Mayank</button>
+                    <button data-filter="DEEPANSHU">Deepanshu</button>
+                    <button data-filter="SHIVANSH">Shivansh</button>
+                    <button data-filter="YASH">Yash</button>
+                </div>
+            </div>
+            <div id="log-content" class="log-content">
+                <!-- Log lines -->
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
